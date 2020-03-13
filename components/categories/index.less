@@ -1,0 +1,68 @@
+.ui-categories {
+    .target-titles {
+        padding-left: 100px;
+        display: flex;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #ccc;
+        .title {
+            margin-left: 8px;
+            width: 40px;
+            text-align: center;
+        }
+    }
+    .category-row {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        position: relative;
+        .remove {
+            display: none;
+            position: absolute;
+            left: 8px;
+            cursor: pointer;
+        }
+        &:hover {
+            .remove {
+                display: block;
+            }
+        }
+        .title {
+            width: 100px;
+            text-align: right;
+        }
+        .targets {
+            display: flex;
+            .target {
+                margin-left: 8px;
+                width: 40px;
+                cursor: default;
+                text-align: center;
+            }
+        }
+    }
+    .add-new {
+        display: flex;
+        margin-top: 16px;
+        .color {
+            width: 32px;
+            height: 32px;
+            margin: 0 8px;
+            border-radius: 3px;
+        }
+    }
+}
+.ui-categories-color-select {
+    .color-item {
+        text-align: center;
+        margin-bottom: 8px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+}
+.ui-category-target-popover {
+    button {
+        margin-right: 8px;
+    }
+}

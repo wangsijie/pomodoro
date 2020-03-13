@@ -1,0 +1,16 @@
+{
+  "build": {
+    "env": {
+      "TCB_ENV": "@tcb_env",
+      "TCB_AK": "@tcb_ak",
+      "TCB_SK": "@tcb_sk",
+      "JWT_KEY": "@jwt_key"
+    }
+  },
+  "env": {
+    "TCB_ENV": "@tcb_env",
+    "TCB_AK": "@tcb_ak",
+    "TCB_SK": "@tcb_sk",
+    "JWT_KEY": "@jwt_key"
+  }
+}

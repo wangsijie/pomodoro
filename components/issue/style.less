@@ -1,0 +1,32 @@
+@import "~react-mde/lib/styles/css/react-mde-all.css";
+
+.ui-issue-title {
+    display: flex;
+    align-items: center;
+    .title {
+        flex: 1;
+    }
+    .remove {
+        margin-right: 8px;
+        color: #999;
+        display: none;
+    }
+    &:hover {
+        .remove {
+            display: block;
+        }
+    }
+}
+
+.ui-issue-body {
+    margin: -16px;
+    position: relative;
+    .react-mde {
+        border: none;
+    }
+    .save-button {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+    }
+}
