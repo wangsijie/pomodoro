@@ -2,7 +2,7 @@ import { getIssues, addIssue } from '../../../helper/db';
 import { apiAuth } from '../../../helper/token';
 
 export default async (req, res) => {
-    const user = apiAuth(req);
+    const user = await apiAuth(req);
     if (!user) {
         res.statusCode = 401;
         res.end();
