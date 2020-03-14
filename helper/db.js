@@ -11,6 +11,9 @@ export async function getUser(where = {}) {
 }
 
 export async function getIssues(where = {}) {
+    if (!where.userId) {
+        throw new Error('userId needed');
+    }
     const db = tcb().database();
     const _ = db.command;
     const start = moment().startOf('isoWeek').format();
