@@ -23,7 +23,7 @@ export default async (req, res) => {
         return;
     }
 
-    if (req.method === 'PATCH') {
+    if (req.method === 'PATCH' || req.method === 'POST') { // tencent cloudbase don't support PATCH
         const { content } = req.body;
         const result = await updateIssue(id, { content });
         res.statusCode = 201;

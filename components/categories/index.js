@@ -103,7 +103,8 @@ export default function Categories({ categories, onChange }) {
         if (changed) {
             setLoading(true);
             for (const item of categories) {
-                await $patch(`/categories/${item._id}`, { targets: item.targets });
+                // await $patch(`/categories/${item._id}`, { targets: item.targets });
+                await $post(`/categories/${item._id}`, { targets: item.targets });
             }
             setLoading(false);
         }

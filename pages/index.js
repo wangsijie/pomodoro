@@ -41,7 +41,8 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
       if (issue.createdAt !== createdAt) {
         return issue;
       }
-      axios.patch(
+      // axios.patch(
+      axios.post(
         process.env.API_ROOT + '/api/issues/' + issue._id,
         data,
       );
