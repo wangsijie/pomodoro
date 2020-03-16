@@ -33,10 +33,11 @@ export async function getIssue(id) {
     return res.data && res.data[0];
 }
 
-export async function addIssue({ title, category, userId }) {
+export async function addIssue({ title, category, content, userId }) {
     const db = tcb().database();
     return db.collection('pomodoro').add({
         title,
+        content,
         category,
         tags: [],
         createdAt: moment().format(),
