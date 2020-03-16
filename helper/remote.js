@@ -7,6 +7,7 @@ export const clearToken = function () {
 }
 
 export const setToken = function(token) {
+    cookie.set('token', null);
     cookie.set('token', token);
 }
 

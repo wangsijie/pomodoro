@@ -35,6 +35,8 @@ export default function AddIssue({ onAdded, categories }) {
             setLoading(false);
             const timer = setInterval(() => setTime(prev => prev + 1), 1000);
             return () => clearInterval(timer);
+        } else {
+            document.title = 'pomodoro';
         }
     }, [visible])
 
@@ -55,6 +57,7 @@ export default function AddIssue({ onAdded, categories }) {
         return `${m}:${s}`;
     }, [time]);
     useEffect(() => {
+        document.title = `🍅${formatedTime}`;
         if (time > 25 * 60) {
             notification.current = new Notification(
                 '🍅Pomodoro Due',
