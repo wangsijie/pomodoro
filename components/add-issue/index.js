@@ -79,7 +79,6 @@ export default function AddIssue({ onAdded, categories }) {
             <Form
                 {...layout}
                 name="add-issue"
-                initialValues={{ remember: true }}
                 onFinish={onFinish}
             >
                 <Form.Item
