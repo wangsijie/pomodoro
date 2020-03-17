@@ -14,7 +14,10 @@ export default function IssueTitle({ issue, number, onDeleted, categories }) {
         onDeleted();
     }
     return <div className="ui-issue-title">
-        <div className="title">#{number} {issue.title}</div>
+        <div className="title">
+            #{number} {issue.title}
+            {issue.content && <div className="note"><Badge count="笔记" style={{ backgroundColor: '#d9d9d9', color: '#000' }} /></div>}
+        </div>
         <div className="remove" onClick={handleDelete}><DeleteOutlined /></div>
         <div className="category"><Badge count={category.title} style={{ backgroundColor: category.color, color: category.fontColor }} /></div>
     </div>
