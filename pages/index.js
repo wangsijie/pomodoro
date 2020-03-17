@@ -1,4 +1,4 @@
-import { Card, Progress, Button, Collapse, Spin } from "antd";
+import { Card, Progress, Button, Collapse, Spin, Badge } from "antd";
 import { ReloadOutlined } from '@ant-design/icons';
 import moment from "moment";
 import axios from 'axios';
@@ -66,6 +66,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
     const percent = finished < required ? Math.floor(finished / required * 100) : 100;
     return {
       name: category.title,
+      category,
       required,
       finished,
       percent,
@@ -90,6 +91,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
       const percent = finished < required ? Math.floor(finished / required * 100) : 100;
       return {
         name: category.title,
+        category,
         required,
         finished,
         percent,
@@ -131,7 +133,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
       </div>}>
         {weekItems.map(item => <div className="job-item" key={item.name}>
           <div className="name">
-            {item.name}
+            <Badge count={item.category.title} style={{ backgroundColor: item.category.color, color: item.category.fontColor }} />
           </div>
           <div className="progress-text">
             {item.finished} / {item.required}
@@ -156,7 +158,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
       >
         {day.items.map(item => <div className="job-item" key={item.name}>
           <div className="name">
-            {item.name}
+            <Badge count={item.category.title} style={{ backgroundColor: item.category.color, color: item.category.fontColor }} />
           </div>
           <div className="progress-text">
             {item.finished} / {item.required}
