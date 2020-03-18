@@ -26,12 +26,14 @@
 
 项目使用[NextJS](https://nextjs.org)开发。数据库存储使用腾讯云提供的“云开发”。
 
-新建`.env`文件填写云开发的配置信息
+新建`.env`文件填写云开发和GitHub OAuth的配置信息
 
 ```
 TCB_ENV="pomodoro-xxxx"
 TCB_AK="AKIDyhFYbPUHxxxxxxx"
 TCB_SK="zjETSHq9CzYxxxxxxxx"
+GITHUB_CLIENT_ID="0f8812dexxxxx"
+GITHUB_CLIENT_SECRET="12a2dff1a85xxxxx"
 ```
 
 然后运行`yarn dev`
