@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv next dev",
-    "build": "next build",
+    "build": "dotenv next build",
     "start": "next start"
   },
   "dependencies": {
