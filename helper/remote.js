@@ -1,15 +1,5 @@
 import axios from 'axios';
 import { message } from 'antd';
-import cookie from 'js-cookie';
-
-export const clearToken = function () {
-    cookie.set('token', null);
-}
-
-export const setToken = function(token) {
-    cookie.set('token', null);
-    cookie.set('token', token);
-}
 
 function resolveError(e) {
     if (!e.response) {

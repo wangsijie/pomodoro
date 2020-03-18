@@ -1,4 +1,4 @@
-import { login } from "../../../helper/token";
+import { login } from "../../../../helper/token";
 
 export default async (req, res) => {
     if (req.method === 'POST') {

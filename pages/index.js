@@ -25,7 +25,7 @@ const weekDays = [
   '周日',
 ];
 
-function Home({ issues: initialIssues, username, categories: initialCategories }) {
+function Home({ issues: initialIssues, user, categories: initialCategories }) {
   const [issues, setIssues] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -109,7 +109,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
     })
   }
 
-  if (!username) {
+  if (!user) {
     return <Login />
   }
 
@@ -120,7 +120,7 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
         <Button onClick={reload} icon={<ReloadOutlined />}></Button>
         <div className="space" />
         <Categories categories={categories} onChange={setCategories} />
-        <UserInfo username={username} />
+        <UserInfo user={user} />
       </div>
       <Card title={<div className="job-item">
         <div className="name">本周</div>
@@ -188,10 +188,9 @@ function Home({ issues: initialIssues, username, categories: initialCategories }
 Home.getInitialProps = async (ctx) => {
   const { token } = nextCookie(ctx);
   const user = await getInfo(token);
-  const username = user && user.name;
   const issues = user ? await getIssues({ userId: user.id }) : [];
   const categories = user ? await getCategories({ userId: user.id }) : [];
-  return { issues, username, categories };
+  return { issues, user, categories };
 }
 
 export default Home;

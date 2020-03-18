@@ -10,6 +10,21 @@ export async function getUser(where = {}) {
     return res.data && res.data[0];
 }
 
+export async function updateUser(id, data) {
+    const db = tcb().database();
+    return db.collection(DB_USER).doc(id).update(data)
+}
+
+export async function createUser(data) {
+    const db = tcb().database();
+    const idCount = await db.collection(DB_USER).count();
+    return db.collection(DB_USER).add({
+        ...data,
+        id: idCount.total + 1,
+        createdAt: moment().format(),
+    });
+}
+
 export async function getIssues(where = {}) {
     if (!where.userId) {
         throw new Error('userId needed');

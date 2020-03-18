@@ -1,21 +1,28 @@
 import { useState } from 'react';
 import { Input, Button } from 'antd';
+import { GithubOutlined } from '@ant-design/icons';
 import './login.less';
-import { $post, setToken } from '../../helper/remote';
+import { $post } from '../../helper/remote';
 import Layout from '../layout';
+
+const enablePasswordLogin = false;
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const login = async () => {
-        const res = await $post('/users/login', { username, password });
-        setToken(res.data);
+        await $post('/users/login', { username, password });
         window.location.reload();
     }
 
+    const loginWithGithub = () => {
+        const clientId = process.env.GITHUB_CLIENT_ID;
+        window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=read:user`;
+    }
+
     return <Layout><div className="login-card">
-        <div className="form">
+        {enablePasswordLogin ? <div className="form">
             <div className="form-row">
                 <Input onChange={e => setUsername(e.target.value)} value={username} placeholder="用户名" />
             </div>
@@ -25,6 +32,6 @@ export default function Login() {
             <div className="form-row">
                 <Button disabled={!username || !password} onClick={login} type="primary">登录</Button>
             </div>
-        </div>
+        </div> : <Button className="github" size="large" icon={<GithubOutlined />} onClick={loginWithGithub} type="primary">GitHub 登录</Button>}
     </div></Layout>;
 }

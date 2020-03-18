@@ -14,12 +14,13 @@ module.exports = (phase, { defaultConfig }) => {
         },
         env: {
             API_ROOT: '',
+            GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
         },
     };
     if (phase !== PHASE_DEVELOPMENT_SERVER) {
-        config.env = {
-            API_ROOT: '',
-        };
+        // config.env = {
+        //     API_ROOT: '',
+        // };
     }
     return withLess(config)
 }
