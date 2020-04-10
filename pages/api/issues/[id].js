@@ -16,7 +16,7 @@ export default async (req, res) => {
         return;
     }
 
-    const issue = await getIssue(id);
+    const issue = await getIssue(user.id, id);
     if (!issue || issue.userId !== user.id) {
         res.statusCode = 401;
         res.end();
@@ -25,12 +25,15 @@ export default async (req, res) => {
 
     if (req.method === 'PATCH' || req.method === 'POST') { // tencent cloudbase don't support PATCH
         const { content } = req.body;
-        const result = await updateIssue(id, { content });
+        await updateIssue(user.id, {
+            ...issue,
+            content,
+        });
         res.statusCode = 201;
-        res.json(result);
+        res.json(await getIssue(user.id, id));
     }
     if (req.method === 'DELETE') {
-        await deleteIssue(id);
+        await deleteIssue(user.id, id);
         res.statusCode = 200;
         res.end();
     }

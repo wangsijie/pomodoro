@@ -1,18 +1,22 @@
 {
   "build": {
     "env": {
-      "TCB_ENV": "@tcb_env",
-      "TCB_AK": "@tcb_ak",
-      "TCB_SK": "@tcb_sk",
+      "OSS_AK": "@oss_ak",
+      "OSS_SK": "@oss_sk",
+      "OSS_BUCKET": "@oss_bucket",
+      "OSS_PREFIX": "@oss_prefix",
+      "OSS_ENDPOINT": "@oss_endpoint",
       "JWT_KEY": "@jwt_key",
       "GITHUB_CLIENT_ID": "@github_client_id",
       "GITHUB_CLIENT_SECRET": "@github_client_secret"
     }
   },
   "env": {
-    "TCB_ENV": "@tcb_env",
-    "TCB_AK": "@tcb_ak",
-    "TCB_SK": "@tcb_sk",
+    "OSS_AK": "@oss_ak",
+    "OSS_SK": "@oss_sk",
+    "OSS_BUCKET": "@oss_bucket",
+    "OSS_PREFIX": "@oss_prefix",
+    "OSS_ENDPOINT": "@oss_endpoint",
     "JWT_KEY": "@jwt_key",
     "GITHUB_CLIENT_ID": "@github_client_id",
     "GITHUB_CLIENT_SECRET": "@github_client_secret"

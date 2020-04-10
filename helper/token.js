@@ -25,7 +25,10 @@ export const loginWithGithub = async (login, token, name, email, avatar) => {
     if (!user) {
         user = await createUser({ githubLogin: login, githubToken: token, githubName: name, githubEmail: email, githubAvatar: avatar });
     } else {
-        await updateUser(user._id, { githubToken: token, githubName: name, githubEmail: email, githubAvatar: avatar });
+        await updateUser({
+            ...user,
+            githubToken: token, githubName: name, githubEmail: email, githubAvatar: avatar
+        });
     }
     return jwt.sign({
         uid: user.id,

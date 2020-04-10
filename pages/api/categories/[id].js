@@ -16,20 +16,24 @@ export default async (req, res) => {
         return;
     }
 
-    const category = await getCategory(id);
-    if (!category || category.userId !== user.id) {
+    const category = await getCategory(user.id, id);
+    if (!category) {
         res.statusCode = 401;
         res.end();
         return;
     }
 
     if (req.method === 'PATCH' || req.method === 'POST') { // tencent cloudbase don't support PATCH
-        const result = await updateCategory(id, req.body);
+        await updateCategory(user.id, {
+            ...category,
+            ...req.body,
+            _id: category._id,
+        });
         res.statusCode = 201;
-        res.json(result);
+        res.json(await getCategory(user.id, id));
     }
     if (req.method === 'DELETE') {
-        await deleteCategory(id);
+        await deleteCategory(user.id, id);
         res.statusCode = 200;
         res.end();
     }

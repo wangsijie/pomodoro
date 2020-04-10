@@ -24,31 +24,23 @@
 
 ## 开发
 
-项目使用[NextJS](https://nextjs.org)开发。数据库存储使用腾讯云提供的“云开发”。
+项目使用[NextJS](https://nextjs.org)开发。数据库存储使用阿里云OSS
 
 新建`.env`文件填写云开发和GitHub OAuth的配置信息
 
 ```
-TCB_ENV="pomodoro-xxxx"
-TCB_AK="AKIDyhFYbPUHxxxxxxx"
-TCB_SK="zjETSHq9CzYxxxxxxxx"
 GITHUB_CLIENT_ID="0f8812dexxxxx"
 GITHUB_CLIENT_SECRET="12a2dff1a85xxxxx"
+OSS_AK="LTAI4FnTFbxjSADxxxxxxxx"
+OSS_SK="1wWQo9JQpSn9xxxxxxx"
+OSS_BUCKET="pomodoro"
+OSS_PREFIX="pomodoro-db/"
+OSS_ENDPOINT="oss-cn-shanghai.aliyuncs.com"
 ```
 
 然后运行`yarn dev`
 
 ## 部署
-
-### 腾讯云-云函数
-
-根据`cloudbaserc.sample.js`创建自己的`cloudbaserc.js`
-
-安装腾讯云cloudbase工具，然后执行
-
-```
-yarn build && tcb functions:deploy pomodoro
-```
 
 ### now.sh
 

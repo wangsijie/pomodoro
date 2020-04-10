@@ -1,78 +1,73 @@
 import moment from 'moment';
-import tcb from './tcb';
+import oss from './oss';
 
-const DB_CAT = 'pomodoro-category';
-const DB_USER = 'pomodoro-user';
+const DB_CAT = 'category';
+const DB_USER = 'user';
+const DB_ISSUE = 'issue';
 
 export async function getUser(where = {}) {
-    const db = tcb().database()
-    const res = await db.collection(DB_USER).where(where).get();
-    return res.data && res.data[0];
+    const users = await oss.find(DB_USER);
+    return users.find(user => {
+        let result = true;
+        Object.keys(where).forEach(key => {
+            if (user[key] !== where[key]) {
+                result = false;
+            }
+        })
+        return result;
+    })
 }
 
-export async function updateUser(id, data) {
-    const db = tcb().database();
-    return db.collection(DB_USER).doc(id).update(data)
+export async function updateUser(data) {
+    return oss.save(DB_USER, data);
 }
 
 export async function createUser(data) {
-    const db = tcb().database();
-    const idCount = await db.collection(DB_USER).count();
-    return db.collection(DB_USER).add({
+    const idCount = (await oss.find(DB_USER)).length;
+    return oss.save(DB_USER, {
         ...data,
         id: idCount.total + 1,
         createdAt: moment().format(),
     });
 }
 
-export async function getIssues(where = {}) {
-    if (!where.userId) {
+export async function getIssues(userId) {
+    if (!userId) {
         throw new Error('userId needed');
     }
-    const db = tcb().database();
-    const _ = db.command;
-    const start = moment().startOf('isoWeek').format();
-    const res = await db.collection('pomodoro').where({
-        createdAt: _.gt(start),
-        ...where,
-    }).get();
-    return res.data.map(item => ({
+    const lastOne = 9999999999999 - moment().startOf('isoWeek').unix() * 1000;
+    const items = await oss.find(DB_ISSUE + '-' + userId, lastOne);
+    return items.map(item => ({
         ...item,
         content: item.content || '',
     }));
 }
 
-export async function getIssue(id) {
-    const db = tcb().database();
-    const res = await db.collection('pomodoro').doc(id).get();
-    return res.data && res.data[0];
+export async function getIssue(userId, id) {
+    return oss.get(DB_ISSUE + '-' + userId, id);
 }
 
 export async function addIssue({ title, category, content, userId }) {
-    const db = tcb().database();
-    return db.collection('pomodoro').add({
+    return oss.save(DB_ISSUE + '-' + userId, {
         title,
         content,
         category,
         tags: [],
         createdAt: moment().format(),
         userId,
-    })
+    });
 }
 
-export async function updateIssue(id, data) {
-    const db = tcb().database();
-    return db.collection('pomodoro').doc(id).update(data)
+export async function updateIssue(userId, data) {
+    return oss.save(DB_ISSUE + '-' + userId, data);
 }
 
-export async function deleteIssue(id) {
-    const db = tcb().database();
-    return db.collection('pomodoro').doc(id).remove()
+export async function deleteIssue(userId, id) {
+    return oss.remove(DB_ISSUE + '-' + userId, id);
 }
 
 export async function addCategory({ title, key, color, fontColor, userId }) {
-    const db = tcb().database();
-    return db.collection(DB_CAT).add({
+    return oss.save(DB_CAT + '-' + userId, {
         title, key, color, fontColor,
         createdAt: moment().format(),
         userId,
@@ -80,26 +75,21 @@ export async function addCategory({ title, key, color, fontColor, userId }) {
 }
 
 export async function getCategories(where = {}) {
-    const db = tcb().database();
-    const res = await db.collection(DB_CAT).where(where).get();
-    return res.data.map(item => ({
+    const items = await oss.find(DB_CAT + '-' + where.userId);
+    return items.map(item => ({
         ...item,
         targets: item.targets || [0, 0, 0, 0, 0, 0, 0],
     }));
 }
 
-export async function getCategory(id) {
-    const db = tcb().database();
-    const res = await db.collection(DB_CAT).doc(id).get();
-    return res.data && res.data[0];
+export async function getCategory(userId, id) {
+    return oss.get(DB_CAT + '-' + userId, id);
 }
 
-export async function updateCategory(id, data) {
-    const db = tcb().database();
-    return db.collection(DB_CAT).doc(id).update(data)
+export async function updateCategory(userId, data) {
+    return oss.save(DB_CAT + '-' + userId, data);
 }
 
-export async function deleteCategory(id) {
-    const db = tcb().database();
-    return db.collection(DB_CAT).doc(id).remove()
+export async function deleteCategory(userId, id) {
+    return oss.remove(DB_CAT + '-' + userId, id);
 }

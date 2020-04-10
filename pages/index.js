@@ -188,7 +188,7 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
 Home.getInitialProps = async (ctx) => {
   const { token } = nextCookie(ctx);
   const user = await getInfo(token);
-  const issues = user ? await getIssues({ userId: user.id }) : [];
+  const issues = user ? await getIssues(user.id) : [];
   const categories = user ? await getCategories({ userId: user.id }) : [];
   return { issues, user, categories };
 }

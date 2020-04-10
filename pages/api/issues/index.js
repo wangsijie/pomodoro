@@ -11,7 +11,7 @@ export default async (req, res) => {
     if (req.method === 'GET') {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify(await getIssues({ userId: user.id })));
+        res.end(JSON.stringify(await getIssues(user.id)));
         return;
     }
     if (req.method === 'POST') {
