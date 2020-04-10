@@ -27,3 +27,5 @@ yarn-error.log*
 .now
 cloudbaserc.js
 deploy.sh
+.fun
+template.yml
