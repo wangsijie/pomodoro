@@ -4,13 +4,17 @@
       "TCB_ENV": "@tcb_env",
       "TCB_AK": "@tcb_ak",
       "TCB_SK": "@tcb_sk",
-      "JWT_KEY": "@jwt_key"
+      "JWT_KEY": "@jwt_key",
+      "GITHUB_CLIENT_ID": "@github_client_id",
+      "GITHUB_CLIENT_SECRET": "@github_client_secret"
     }
   },
   "env": {
     "TCB_ENV": "@tcb_env",
     "TCB_AK": "@tcb_ak",
     "TCB_SK": "@tcb_sk",
-    "JWT_KEY": "@jwt_key"
+    "JWT_KEY": "@jwt_key",
+    "GITHUB_CLIENT_ID": "@github_client_id",
+    "GITHUB_CLIENT_SECRET": "@github_client_secret"
   }
 }
