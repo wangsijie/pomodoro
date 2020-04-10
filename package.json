@@ -15,7 +15,7 @@
     "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
-    "next": "9.2.2",
+    "next": "9.3.2",
     "next-cookies": "^2.0.3",
     "null-loader": "^3.0.0",
     "react": "16.13.0",
