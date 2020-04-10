@@ -15,7 +15,8 @@ export default async (req, res) => {
             return;
         }
         res.statusCode = 201;
-        res.end(token);
+        res.setHeader('set-cookie', `token=${token}; HttpOnly; Path=/`);
+        res.end();
         return;
     }
     res.statusCode = 404;

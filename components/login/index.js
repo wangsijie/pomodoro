@@ -5,7 +5,7 @@ import './login.less';
 import { $post } from '../../helper/remote';
 import Layout from '../layout';
 
-const enablePasswordLogin = false;
+const enablePasswordLogin = process.env.PASSWORD_LOGIN;
 
 export default function Login() {
     const [username, setUsername] = useState('');
