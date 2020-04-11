@@ -29,7 +29,11 @@ export default function AddIssue({ onAdded, categories }) {
     };
 
     useEffect(() => {
-        Notification.requestPermission();
+        try {
+            Notification.requestPermission();
+        } catch (e) {
+            // noop
+        }
     }, [])
 
     useEffect(() => {
