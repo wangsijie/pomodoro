@@ -25,16 +25,11 @@ const weekDays = [
   '周日',
 ];
 
-function Home({ issues: initialIssues, user, categories: initialCategories }) {
+function Home() {
   const [issues, setIssues] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    setIssues(initialIssues);
-  }, [initialIssues]);
-  useEffect(() => {
-    setCategories(initialCategories);
-  }, [initialCategories]);
+  const [user, setUser] = useState(null);
 
   const updateIssue = (createdAt, data) => {
     setIssues(prevIssues => prevIssues.map(issue => {
@@ -53,12 +48,40 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
     }))
   };
 
+  const request = useCallback(async (endpoint) => {
+    try {
+      const res = await axios.get(process.env.API_ROOT + endpoint);
+      return res.data;
+    } catch (e) {
+      if (e.response && e.response.status === 401) {
+        setUser('need-login');
+      } else {
+        throw e;
+      }
+    }
+  }, [])
+
   const reload = useCallback(async () => {
     setLoading(true);
-    const res = await axios.get(process.env.API_ROOT + '/api/issues');
+    const res = await request('/api/issues');
     setLoading(false);
-    setIssues(res.data);
+    setIssues(res);
   }, []);
+
+  useEffect(() => {
+    request('/api/users/profile').then(setUser);
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      reload();
+      request('/api/categories').then(setCategories);
+    }
+  }, [user])
+
+  if (user === 'need-login') {
+    return <Login />
+  }
 
   const weekItems = categories.map(category => {
     const required = category.targets.reduce((p, v) => p + v, 0);
@@ -109,10 +132,6 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
     })
   }
 
-  if (!user) {
-    return <Login />
-  }
-
   return <Layout className="page-index">
     <Spin spinning={loading}>
       <div className="buttons">
@@ -120,7 +139,7 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
         <Button onClick={reload} icon={<ReloadOutlined />}></Button>
         <div className="space" />
         <Categories categories={categories} onChange={setCategories} />
-        <UserInfo user={user} />
+        {user && <UserInfo user={user} />}
       </div>
       <Card title={<div className="job-item">
         <div className="name">本周</div>
@@ -139,7 +158,7 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
             {item.finished} / {item.required}
           </div>
           <div className="progress">
-            <Progress percent={item.percent} />
+            {(item.finished || item.required) && <Progress percent={item.percent} />}
           </div>
         </div>)}
       </Card>
@@ -150,7 +169,7 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
             {day.finished} / {day.required}
           </div>
           <div className="progress">
-            <Progress percent={day.percent} />
+          {(day.finished || day.required) && <Progress percent={day.percent} />}
           </div>
         </div>}
         key={day.name}
@@ -183,14 +202,6 @@ function Home({ issues: initialIssues, user, categories: initialCategories }) {
       </Card>)}
     </Spin>
   </Layout>
-}
-
-Home.getInitialProps = async (ctx) => {
-  const { token } = nextCookie(ctx);
-  const user = await getInfo(token);
-  const issues = user ? await getIssues(user.id) : [];
-  const categories = user ? await getCategories({ userId: user.id }) : [];
-  return { issues, user, categories };
 }
 
 export default Home;
