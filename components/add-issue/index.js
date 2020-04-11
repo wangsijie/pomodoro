@@ -14,14 +14,17 @@ const tailLayout = {
 
 export default function AddIssue({ onAdded, categories }) {
     const [visible, setVisible] = useState(false);
+    const [running, setRunning] = useState(false);
     const [time, setTime] = useState(0);
     const [loading, setLoading] = useState(false);
-
+    const formRef = useRef(null);
     const onFinish = async (values) => {
         setLoading(true);
         await axios.post(process.env.API_ROOT + '/api/issues', values);
+        formRef.current.resetFields();
         setLoading(false);
         setVisible(false);
+        setRunning(false);
         onAdded && onAdded();
     };
 
@@ -30,15 +33,22 @@ export default function AddIssue({ onAdded, categories }) {
     }, [])
 
     useEffect(() => {
-        if (visible) {
+        if (running) {
             setTime(0);
             setLoading(false);
             const timer = setInterval(() => setTime(prev => prev + 1), 1000);
-            return () => clearInterval(timer);
-        } else {
-            document.title = 'Pomodoro';
+            return () => {
+                setTime(0);
+                clearInterval(timer);
+            };
         }
-    }, [visible])
+    }, [running])
+
+    useEffect(() => {
+        if (!running && visible) {
+            setRunning(true);
+        }
+    }, [running, visible])
 
     const notification = useRef(null);
     const formatedTime = useMemo(() => {
@@ -63,24 +73,31 @@ export default function AddIssue({ onAdded, categories }) {
                 '🥁Pomodoro Due',
                 { body: formatedTime },
             );
+        } else if (!time) {
+            document.title = 'Pomodoro';
         }
     }, [time])
 
     return <>
-        <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => setVisible(true)} />
+        <Button type="primary" icon={<PlusCircleOutlined />} onClick={() => setVisible(true)} >
+            {time ? formatedTime : null}
+        </Button>
         <Modal
             visible={visible}
-            onCancel={() => setVisible(false)}
+            onCancel={() => {
+                setVisible(false);
+                setRunning(false);
+            }}
             title={`添加🍅${formatedTime}`}
             footer={null}
             width={800}
             style={{ top: '24px' }}
-            destroyOnClose
         >
             <Form
                 {...layout}
                 name="add-issue"
                 onFinish={onFinish}
+                ref={formRef}
             >
                 <Form.Item
                     label="标题"
@@ -109,6 +126,10 @@ export default function AddIssue({ onAdded, categories }) {
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit" loading={loading}>
                         提交
+                    </Button>
+                    &nbsp;
+                    <Button loading={loading} onClick={() => setVisible(false)}>
+                        隐藏
                     </Button>
                 </Form.Item>
             </Form>
