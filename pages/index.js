@@ -158,7 +158,7 @@ function Home() {
             {item.finished} / {item.required}
           </div>
           <div className="progress">
-            {(item.finished || item.required) && <Progress percent={item.percent} />}
+            {(item.finished && item.required) && <Progress percent={item.percent} />}
           </div>
         </div>)}
       </Card>
@@ -169,7 +169,7 @@ function Home() {
             {day.finished} / {day.required}
           </div>
           <div className="progress">
-          {(day.finished || day.required) && <Progress percent={day.percent} />}
+          {(day.finished && day.required) && <Progress percent={day.percent} />}
           </div>
         </div>}
         key={day.name}
