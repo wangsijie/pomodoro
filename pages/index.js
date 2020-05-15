@@ -150,7 +150,7 @@ function Home() {
           <Progress percent={weekPercent} />
         </div>
       </div>}>
-        {weekItems.map(item => <div className="job-item" key={item.name}>
+        {weekItems.filter(item => item.required || item.finished).map(item => <div className="job-item" key={item.name}>
           <div className="name">
             <Badge count={item.category.title} style={{ backgroundColor: item.category.color, color: item.category.fontColor }} />
           </div>
@@ -175,7 +175,7 @@ function Home() {
         key={day.name}
         style={{ marginTop: '10px' }}
       >
-        {day.items.map(item => <div className="job-item" key={item.name}>
+        {day.items.filter(item => item.required || item.finished).map(item => <div className="job-item" key={item.name}>
           <div className="name">
             <Badge count={item.category.title} style={{ backgroundColor: item.category.color, color: item.category.fontColor }} />
           </div>
