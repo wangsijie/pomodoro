@@ -96,6 +96,7 @@ export default function AddIssue({ onAdded, categories }) {
             footer={null}
             width={800}
             style={{ top: '24px' }}
+            maskClosable={false}
         >
             <Form
                 {...layout}
