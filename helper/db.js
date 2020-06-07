@@ -32,7 +32,7 @@ export async function updateUser(data) {
     delete data.id;
     return query(
         q.Update(
-            q.Ref(q.Collection('user', id)),
+            q.Ref(q.Collection('user'), id),
             { data },
         )
     );
