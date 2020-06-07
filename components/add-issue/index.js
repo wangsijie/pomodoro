@@ -113,11 +113,11 @@ export default function AddIssue({ onAdded, categories }) {
                 </Form.Item>
                 <Form.Item
                     label="类别"
-                    name="category"
+                    name="categoryId"
                     rules={[{ required: true }]}
                 >
                     <Select>
-                        {categories.map(item => <Select.Option key={item.key} value={item.key}>
+                        {categories.map(item => <Select.Option key={item.id} value={item.id}>
                             {item.title}
                         </Select.Option>)}
                     </Select>

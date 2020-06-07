@@ -24,18 +24,14 @@
 
 ## 开发
 
-项目使用[NextJS](https://nextjs.org)开发。数据库存储使用阿里云OSS
+项目使用[NextJS](https://nextjs.org)开发。数据库存储[FaunaDB](https://fauna.com/)
 
-新建`.env`文件填写云开发和GitHub OAuth的配置信息
+新建`.env`文件填写FaunaDB和GitHub OAuth的配置信息
 
 ```
 GITHUB_CLIENT_ID="0f8812dexxxxx"
 GITHUB_CLIENT_SECRET="12a2dff1a85xxxxx"
-OSS_AK="LTAI4FnTFbxjSADxxxxxxxx"
-OSS_SK="1wWQo9JQpSn9xxxxxxx"
-OSS_BUCKET="pomodoro"
-OSS_PREFIX="pomodoro-db/"
-OSS_ENDPOINT="oss-cn-shanghai.aliyuncs.com"
+FAUNA_KEY="LTAI4FnTFbxjSADxxxxxxxx"
 ```
 
 然后运行`yarn dev`
@@ -44,7 +40,7 @@ OSS_ENDPOINT="oss-cn-shanghai.aliyuncs.com"
 
 ### now.sh
 
-参照`now.json`文件设置secret后，执行
+参照`vercel.json`文件设置secret后，执行
 
 ```
 now --prod

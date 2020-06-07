@@ -27,7 +27,7 @@ export default async (req, res) => {
         await updateCategory(user.id, {
             ...category,
             ...req.body,
-            _id: category._id,
+            id,
         });
         res.statusCode = 201;
         res.json(await getCategory(user.id, id));

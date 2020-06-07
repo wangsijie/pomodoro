@@ -104,7 +104,7 @@ export default function Categories({ categories, onChange }) {
             setLoading(true);
             for (const item of categories) {
                 // await $patch(`/categories/${item._id}`, { targets: item.targets });
-                await $post(`/categories/${item._id}`, { targets: item.targets });
+                await $post(`/categories/${item.id}`, { targets: item.targets });
             }
             setLoading(false);
         }
@@ -118,7 +118,6 @@ export default function Categories({ categories, onChange }) {
         setLoading(true);
         await $post('/categories', {
             title,
-            key: Date.now(),
             color: color.color,
             fontColor: color.fontColor,
         });
@@ -127,9 +126,9 @@ export default function Categories({ categories, onChange }) {
         setLoading(false);
     }
 
-    const addTarget = async (key, index) => {
+    const addTarget = async (id, index) => {
         onChange(prev => prev.map(item => {
-            if (item.key !== key) {
+            if (item.id !== id) {
                 return item;
             }
             return {
@@ -145,9 +144,9 @@ export default function Categories({ categories, onChange }) {
         setChanged(true);
     }
 
-    const minusTarget = async (key, index) => {
+    const minusTarget = async (id, index) => {
         onChange(prev => prev.map(item => {
-            if (item.key !== key) {
+            if (item.id !== id) {
                 return item;
             }
             return {
@@ -163,11 +162,11 @@ export default function Categories({ categories, onChange }) {
         setChanged(true);
     }
 
-    const handleDelete = async (key) => {
-        const category = categories.find(c => c.key === key);
+    const handleDelete = async (id) => {
+        const category = categories.find(c => c.id === id);
         setLoading(true);
-        await $delete(`/categories/${category._id}`);
-        onChange(prev => prev.filter(c => c._id !== category._id));
+        await $delete(`/categories/${category.id}`);
+        onChange(prev => prev.filter(c => c.id !== category.id));
         setLoading(false);
     }
 
@@ -183,8 +182,8 @@ export default function Categories({ categories, onChange }) {
                 <div className="target-titles">
                     {weekDays.map(day => <div key={day} className="title">{day}</div>)}
                 </div>
-                {categories.map(item => <div className="category-row" key={item.key}>
-                    <div className="remove" onClick={() => handleDelete(item.key)}><DeleteOutlined /></div>
+                {categories.map(item => <div className="category-row" key={item.id}>
+                    <div className="remove" onClick={() => handleDelete(item.id)}><DeleteOutlined /></div>
                     <div className="title">
                         <Badge count={item.title} style={{ backgroundColor: item.color, color: item.fontColor }} />
                     </div>
@@ -192,8 +191,8 @@ export default function Categories({ categories, onChange }) {
                         {item.targets.map((value, index) => <div className="target" key={index}>
                             <Popover trigger="hover" title="调整🍅目标" content={
                                 <div className="ui-category-target-popover">
-                                    <Button icon={<PlusCircleOutlined />} onClick={() => addTarget(item.key, index)}></Button>
-                                    <Button disabled={value === 0} icon={<MinusCircleOutlined />} onClick={() => minusTarget(item.key, index)}></Button>
+                                    <Button icon={<PlusCircleOutlined />} onClick={() => addTarget(item.id, index)}></Button>
+                                    <Button disabled={value === 0} icon={<MinusCircleOutlined />} onClick={() => minusTarget(item.id, index)}></Button>
                                 </div>
                             }>
                                 {value}

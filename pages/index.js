@@ -31,14 +31,14 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
-  const updateIssue = (createdAt, data) => {
+  const updateIssue = (id, data) => {
     setIssues(prevIssues => prevIssues.map(issue => {
-      if (issue.createdAt !== createdAt) {
+      if (issue.id !== id) {
         return issue;
       }
       // axios.patch(
       axios.post(
-        process.env.API_ROOT + '/api/issues/' + issue._id,
+        process.env.API_ROOT + '/api/issues/' + issue.id,
         data,
       );
       return {
@@ -85,7 +85,7 @@ function Home() {
 
   const weekItems = categories.map(category => {
     const required = category.targets.reduce((p, v) => p + v, 0);
-    const finished = issues.filter(issue => issue.category === category.key).length;
+    const finished = issues.filter(issue => issue.categoryId === category.id).length;
     const percent = finished < required ? Math.floor(finished / required * 100) : 100;
     return {
       name: category.title,
@@ -110,7 +110,7 @@ function Home() {
     const items = categories.map(category => {
       const required = category.targets[i - 1];
       const finished = finishedIssues
-        .filter(issue => issue.category === category.key).length;
+        .filter(issue => issue.categoryId === category.id).length;
       const percent = finished < required ? Math.floor(finished / required * 100) : 100;
       return {
         name: category.title,

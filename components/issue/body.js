@@ -17,7 +17,7 @@ export default function IssueBody({ issue, updateIssue }) {
     useEffect(() => {
         setValue(issue.content);
     }, [issue.content])
-    const onSave = () => updateIssue(issue.createdAt, { content: value });
+    const onSave = () => updateIssue(issue.id, { content: value });
     return <div className="ui-issue-body">
         <ReactMde
             value={value}
