@@ -1,32 +1,31 @@
 import moment from 'moment';
 import oss from './oss';
+import { getUserByName, getUserById, getUserByGithub, updateUser as _updateUser, createUser as _createUser } from './fauna';
 
 const DB_CAT = 'category';
-const DB_USER = 'user';
 const DB_ISSUE = 'issue';
 
 export async function getUser(where = {}) {
-    const users = await oss.find(DB_USER);
-    return users.find(user => {
-        let result = true;
-        Object.keys(where).forEach(key => {
-            if (user[key] !== where[key]) {
-                result = false;
-            }
-        })
-        return result;
-    })
+    if (where.name) {
+        const user = await getUserByName(where.name);
+        if (user && user.password === where.password) {
+            return user;
+        }
+        return null;
+    }
+    if (where.githubLogin) {
+        return await getUserByGithub(where.githubLogin);
+    }
+    return await getUserById(where.id);
 }
 
 export async function updateUser(data) {
-    return oss.save(DB_USER, data);
+    return _updateUser(data.id, data);
 }
 
 export async function createUser(data) {
-    const idCount = (await oss.find(DB_USER)).length;
-    return oss.save(DB_USER, {
+    return _createUser({
         ...data,
-        id: idCount.total + 1,
         createdAt: moment().format(),
     });
 }

@@ -8,7 +8,8 @@
       "OSS_ENDPOINT": "@oss_endpoint",
       "JWT_KEY": "@jwt_key",
       "GITHUB_CLIENT_ID": "@github_client_id",
-      "GITHUB_CLIENT_SECRET": "@github_client_secret"
+      "GITHUB_CLIENT_SECRET": "@github_client_secret",
+      "FAUNA_KEY": "@fauna_key"
     }
   },
   "env": {
@@ -19,7 +20,7 @@
     "OSS_ENDPOINT": "@oss_endpoint",
     "JWT_KEY": "@jwt_key",
     "GITHUB_CLIENT_ID": "@github_client_id",
-    "GITHUB_CLIENT_SECRET": "@github_client_secret"
-  },
-  "regions": ["hkg1"]
+    "GITHUB_CLIENT_SECRET": "@github_client_secret",
+    "FAUNA_KEY": "@fauna_key"
+  }
 }
