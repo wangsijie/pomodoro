@@ -65,9 +65,11 @@ export async function getIssues(userId) {
             ),
             { withAfter: true, parseArray: true },
         );
-        result.push(...items.filter(item => moment(item.time).isAfter(week)));
-        if (items.find(item => moment(item.time).isBefore(week))) {
+        result.push(...(items.filter(item => moment(item.createdAt).isAfter(week))));
+        if (!items.find(item => moment(item.createdAt).isBefore(week))) {
             after = _after;
+        } else {
+            after = null;
         }
     } while (after);
     return result;
