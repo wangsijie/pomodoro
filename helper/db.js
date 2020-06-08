@@ -51,7 +51,7 @@ export async function getIssues(userId) {
     if (!userId) {
         throw new Error('userId needed');
     }
-    const week = moment().startOf('week').add(1, 'day');
+    const week = moment().startOf('isoWeek');
     const result = [];
     let after;
     do {
