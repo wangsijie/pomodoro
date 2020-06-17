@@ -72,7 +72,7 @@ export default function AddIssue({ onAdded, categories }) {
     }, [time]);
     useEffect(() => {
         document.title = `💻${formatedTime}`;
-        if (time > 25 * 60) {
+        if (time > 25 * 60 && time % 60 === 1) {
             notification.current = new Notification(
                 '🥁Pomodoro Due',
                 { body: formatedTime },
