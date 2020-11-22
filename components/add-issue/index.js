@@ -122,12 +122,12 @@ export default function AddIssue({ onAdded, categories }) {
                         </Select.Option>)}
                     </Select>
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     label="笔记"
                     name="content"
                 >
                     <Editor />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit" loading={loading}>
                         提交
