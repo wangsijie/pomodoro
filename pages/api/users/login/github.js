@@ -17,9 +17,7 @@ export default async (req, res) => {
         res.statusCode = 400;
         return res.end();
     }
-    const githubUser = await getUserInfo(accessToken);
-    const { login, avatar_url: avatar, name, email } = githubUser;
-    const token = await loginWithGithub(login, accessToken, name, email, avatar);
+    const token = await loginWithGithub(accessToken);
     res.statusCode = 302;
     res.setHeader('location', '/');
     res.setHeader('set-cookie', `token=${token}; HttpOnly; Path=/`);

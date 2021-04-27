@@ -1,40 +1,32 @@
 import jwt from 'jsonwebtoken';
 import nextCookies from 'next-cookies';
-import { getUser, createUser, updateUser } from './db';
+import { getUserInfo } from './github';
 
 const key = process.env.JWT_KEY || 'jwt-local-key';
 
-export const loginWithGithub = async (login, token, name, email, avatar) => {
-    if (!login || login.length < 2) {
-        return null;
-    }
-    let user = await getUser({ githubLogin: login })
-    if (!user) {
-        user = await createUser({ githubLogin: login, githubToken: token, githubName: name, githubEmail: email, githubAvatar: avatar });
-    } else {
-        await updateUser({
-            ...user,
-            githubToken: token, githubName: name, githubEmail: email, githubAvatar: avatar
-        });
-    }
+export const loginWithGithub = async (token) => {
     return jwt.sign({
-        uid: user.id,
+        gh_token: token,
     }, key, { expiresIn: '7d' });
 }
 
 export const getInfo = async (token) => {
     try {
         const data = jwt.verify(token, key);
-        if (!data || !data.uid) {
+        if (!data || !data.gh_token) {
             return null;
         }
-        const user = await getUser({ id: data.uid });
-        if (!user) {
+        const githubInfo = await getUserInfo(data.gh_token);
+        // 暂时不允许外部访问
+        if (githubInfo.login !== 'wangsijie') {
             return null;
         }
-        delete user.password;
-        delete user.githubToken;
-        return user;
+        return {
+            id: '267653441341358599',
+            githubAvatar: githubInfo.avatar_url,
+            githubLogin: githubInfo.login,
+            githubName: githubInfo.name,
+        };
     } catch (e) {
         return null;
     }

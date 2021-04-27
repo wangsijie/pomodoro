@@ -1,52 +1,6 @@
 import moment from 'moment';
 import { query, q } from './fauna';
 
-export async function getUser(where = {}) {
-    if (where.name) {
-        const user = await query(
-            q.Get(
-                q.Match(q.Index('users_by_name'), where.name)
-            )
-        );;
-        if (user && user.password === where.password) {
-            return user;
-        }
-        return null;
-    }
-    if (where.githubLogin) {
-        return await query(
-            q.Get(
-                q.Match(q.Index('users_by_github'), where.githubLogin)
-            )
-        );;
-    }
-    return await query(
-        q.Get(
-            q.Ref(q.Collection('user'), where.id)
-        )
-    );;
-}
-
-export async function updateUser(data) {
-    const id = data.id;
-    delete data.id;
-    return query(
-        q.Update(
-            q.Ref(q.Collection('user'), id),
-            { data },
-        )
-    );
-}
-
-export async function createUser(data) {
-    return query(
-        q.Create(
-            q.Collection('user'),
-            { data },
-        )
-    )
-}
-
 export async function getIssues(userId) {
     if (!userId) {
         throw new Error('userId needed');
