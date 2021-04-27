@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv next dev",
+    "start": "dotenv next dev",
     "build": "dotenv next build",
-    "start": "next start",
-    "start:fc": "fun local start"
+    "start:prod": "next start"
   },
   "dependencies": {
     "@zeit/next-less": "^1.0.1",

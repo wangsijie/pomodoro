@@ -15,7 +15,6 @@ module.exports = (phase, { defaultConfig }) => {
         env: {
             API_ROOT: '',
             GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-            PASSWORD_LOGIN: process.env.PASSWORD_LOGIN,
         },
     };
     if (phase !== PHASE_DEVELOPMENT_SERVER) {

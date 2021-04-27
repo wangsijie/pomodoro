@@ -4,19 +4,6 @@ import { getUser, createUser, updateUser } from './db';
 
 const key = process.env.JWT_KEY || 'jwt-local-key';
 
-export const login = async (name, password) => {
-    if (!name || !password) {
-        return null;
-    }
-    const user = await getUser({ name, password })
-    if (!user) {
-        return null;
-    }
-    return jwt.sign({
-        uid: user.id,
-    }, key, { expiresIn: '7d' });
-}
-
 export const loginWithGithub = async (login, token, name, email, avatar) => {
     if (!login || login.length < 2) {
         return null;
