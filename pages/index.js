@@ -79,6 +79,10 @@ function Home() {
     }
   }, [user])
 
+  if (!user) {
+    return <div className="loading"><Spin spinning /></div>;
+  }
+
   if (user === 'need-login') {
     return <Login />
   }

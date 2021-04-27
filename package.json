@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@zeit/next-less": "^1.0.1",
-    "ali-oss": "^6.6.0",
     "antd": "^4.0.1",
     "axios": "^0.19.2",
     "faunadb": "^2.14.2",
