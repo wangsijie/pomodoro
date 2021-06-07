@@ -1,4 +1,7 @@
 import moment from 'moment';
+import UUID from 'readableuuid';
+import { TS } from 'easy-tablestore';
+import { getClient } from './ots';
 import { query, q } from './fauna';
 
 export async function getIssues(userId) {
@@ -87,47 +90,50 @@ export async function deleteIssue(userId, id) {
     )
 }
 
-export async function addCategory({ title, key, color, fontColor, userId }) {
-    return query(
-        q.Create(
-            q.Collection('category'),
-            {
-                data: {
-                    title, key, color, fontColor,
-                    targets: [0, 0, 0, 0, 0, 0, 0],
-                    createdAt: moment().format(),
-                    userId,
-                },
-            }
-        )
-    )
+export async function addCategory({ title, color, fontColor, userId }) {
+    return await getClient().putRow(
+        'category',
+        {
+            userId,
+            id: UUID(),
+        },
+        {
+            title,
+            color,
+            fontColor,
+        },
+    );
 }
 
-export async function getCategories(where = {}) {
-    return query(
-        q.Map(
-            q.Paginate(
-                q.Match(q.Index('categories_by_userId'), where.userId)
-            ),
-            x => q.Get(x),
-        ),
-        { parseArray: true },
-    )
+export async function getCategories(userId) {
+    return (await getClient().getRows(
+        'category',
+        {
+            userId,
+            id: TS.INF_MIN,
+        },
+        {
+            userId,
+            id: TS.INF_MAX,
+        },
+    )).map(category => ({
+        ...category,
+        targets: category.targets ? JSON.parse(category.targets) : [0, 0, 0, 0, 0, 0, 0],
+    }));
 }
 
 export async function getCategory(userId, id) {
-    const item = await query(
-        q.Get(
-            q.Ref(q.Collection('category'), id)
-        )
+    const category =  await getClient().getRow(
+        'category',
+        {
+            userId,
+            id,
+        },
     );
-    if (!item) {
-        return null;
-    }
-    if (item.userId !== userId) {
-        return null;
-    }
-    return item;
+    return {
+        ...category,
+        targets: category.targets ? JSON.parse(category.targets) : [0, 0, 0, 0, 0, 0, 0],
+    };
 }
 
 export async function updateCategory(userId, data) {
@@ -135,11 +141,17 @@ export async function updateCategory(userId, data) {
     if (category) {
         const id = data.id;
         delete data.id;
-        return query(
-            q.Update(
-                q.Ref(q.Collection('category'), id),
-                { data },
-            )
+        delete data.userId;
+        return await getClient().putRow(
+            'category',
+            {
+                userId,
+                id,
+            },
+            {
+                ...data,
+                targets: JSON.stringify(data.targets || [0, 0, 0, 0, 0, 0, 0]),
+            },
         );
     }
     throw new Error('not found');
@@ -150,7 +162,11 @@ export async function deleteCategory(userId, id) {
     if (!category) {
         throw new Error('not found');
     }
-    return query(
-        q.Delete(q.Ref(q.Collection('category'), id))
-    )
+    return await getClient().deleteRow(
+        'category',
+        {
+            userId,
+            id,
+        },
+    );
 }

@@ -8,7 +8,11 @@ module.exports = (phase, { defaultConfig }) => {
                 config.module.rules.push({
                     test: /tcb-admin-node/,
                     use: "null-loader",
-                })
+                });
+                config.module.rules.push({
+                    test: /tablestore/,
+                    use: "null-loader",
+                });
             }
             return config
         },

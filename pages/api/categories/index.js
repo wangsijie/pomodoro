@@ -10,7 +10,7 @@ export default async (req, res) => {
     }
     if (req.method === 'GET') {
         res.statusCode = 200;
-        res.json(await getCategories({ userId: user.id }));
+        res.json(await getCategories(user.id));
         return;
     }
     if (req.method === 'POST') {

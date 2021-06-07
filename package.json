@@ -11,6 +11,7 @@
     "@zeit/next-less": "^1.0.1",
     "antd": "^4.0.1",
     "axios": "^0.19.2",
+    "easy-tablestore": "^1.6.0",
     "faunadb": "^2.14.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
@@ -20,6 +21,7 @@
     "react": "16.13.0",
     "react-dom": "16.13.0",
     "react-mde": "^8.1.0",
+    "readableuuid": "^0.3.0",
     "showdown": "^1.9.1"
   },
   "devDependencies": {
