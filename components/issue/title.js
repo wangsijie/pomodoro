@@ -16,8 +16,7 @@ export default function IssueTitle({ issue, number, onDeleted, categories }) {
     }
     return <div className="ui-issue-title">
         <div className="title">
-            #{number} {issue.title}
-            {issue.content && <div className="note"><Badge count="笔记" style={{ backgroundColor: '#d9d9d9', color: '#000' }} /></div>}
+            <div>#{number} {issue.title}</div>
             <div className="time">{moment(issue.createdAt).format('HH:mm')}</div>
         </div>
         <div className="remove" onClick={handleDelete}><DeleteOutlined /></div>

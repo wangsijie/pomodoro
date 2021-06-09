@@ -1,80 +1,58 @@
 import moment from 'moment';
-import UUID from 'readableuuid';
 import { TS } from 'easy-tablestore';
 import { getClient } from './ots';
-import { query, q } from './fauna';
 
 export async function getIssues(userId) {
     if (!userId) {
         throw new Error('userId needed');
     }
     const week = moment().startOf('isoWeek');
-    const result = [];
-    let after;
-    do {
-        const [items, _after] = await query(
-            q.Map(
-                q.Paginate(
-                    q.Match(q.Index('issues_by_userId'), userId),
-                    { after },
-                ),
-                x => q.Get(x),
-            ),
-            { withAfter: true, parseArray: true },
-        );
-        result.push(...(items.filter(item => moment(item.createdAt).isAfter(week))));
-        if (!items.find(item => moment(item.createdAt).isBefore(week))) {
-            after = _after;
-        } else {
-            after = null;
-        }
-    } while (after);
-    return result;
+    return await getClient().getRows(
+        'issue',
+        {
+            userId,
+            id: week.unix() * 1000000,
+        },
+        {
+            userId,
+            id: TS.INF_MAX,
+        },
+    );
 }
 
 export async function getIssue(userId, id) {
-    const item = await query(
-        q.Get(
-            q.Ref(q.Collection('issue'), id)
-        )
-    );
-    if (!item) {
-        return null;
-    }
-    if (item.userId !== userId) {
-        return null;
-    }
-    return item;
+    return await getClient().getRow('issue', { userId, id });
 }
 
-export async function addIssue({ title, categoryId, content, userId }) {
-    return query(
-        q.Create(
-            q.Collection('issue'),
-            {
-                data: {
-                    title,
-                    content,
-                    categoryId,
-                    tags: [],
-                    createdAt: moment().format(),
-                    userId,
-                },
-            }
-        )
+export async function addIssue({ title, categoryId, userId }) {
+    return await getClient().putRow(
+        'issue',
+        {
+            userId,
+            id: TS.PK_AUTO_INCR,
+        },
+        {
+            title,
+            categoryId,
+            time: new Date().getTime(),
+        },
     )
 }
 
 export async function updateIssue(userId, data) {
     const issue = await getIssue(userId, data.id);
     if (issue) {
-        const id = data.id;
-        delete data.id;
-        return query(
-            q.Update(
-                q.Ref(q.Collection('issue'), id),
-                { data },
-            )
+        delete data.id,
+        delete data.userId
+        await getClient().putRow(
+            'issue',
+            {
+                userId,
+                id: issue.id
+            },
+            {
+                ...data,
+            },
         );
     }
     throw new Error('not found');
@@ -85,9 +63,7 @@ export async function deleteIssue(userId, id) {
     if (!issue) {
         throw new Error('not found');
     }
-    return query(
-        q.Delete(q.Ref(q.Collection('issue'), id))
-    )
+    await getClient().deleteRow('issue', { userId, id });
 }
 
 export async function addCategory({ title, color, fontColor, userId }) {
@@ -95,12 +71,13 @@ export async function addCategory({ title, color, fontColor, userId }) {
         'category',
         {
             userId,
-            id: UUID(),
+            id: TS.PK_AUTO_INCR,
         },
         {
             title,
             color,
             fontColor,
+            targets: JSON.stringify([0, 0, 0, 0, 0, 0, 0]),
         },
     );
 }
@@ -118,7 +95,7 @@ export async function getCategories(userId) {
         },
     )).map(category => ({
         ...category,
-        targets: category.targets ? JSON.parse(category.targets) : [0, 0, 0, 0, 0, 0, 0],
+        targets: JSON.parse(category.targets),
     }));
 }
 
@@ -132,7 +109,7 @@ export async function getCategory(userId, id) {
     );
     return {
         ...category,
-        targets: category.targets ? JSON.parse(category.targets) : [0, 0, 0, 0, 0, 0, 0],
+        targets: JSON.parse(category.targets),
     };
 }
 
@@ -150,7 +127,7 @@ export async function updateCategory(userId, data) {
             },
             {
                 ...data,
-                targets: JSON.stringify(data.targets || [0, 0, 0, 0, 0, 0, 0]),
+                targets: JSON.stringify(data.targets),
             },
         );
     }

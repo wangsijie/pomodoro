@@ -9,12 +9,12 @@ export default async (req, res) => {
         return;
     }
 
-    const { id } = req.query;
-    if (!id) {
+    if (!req.query.id) {
         res.statusCode = 404;
         res.end();
         return;
     }
+    const id = Number(req.query.id);
 
     const issue = await getIssue(user.id, id);
     if (!issue || issue.userId !== user.id) {

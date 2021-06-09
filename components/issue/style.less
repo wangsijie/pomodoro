@@ -6,9 +6,7 @@
     .title {
         flex: 1;
         display: flex;
-        .note {
-            margin-left: 8px;
-        }
+        align-items: center;
         .time {
             margin-left: 8px;
             font-size: 12px;
@@ -19,6 +17,7 @@
     .remove {
         margin-right: 8px;
         color: #999;
+        cursor: pointer;
         display: none;
     }
     &:hover {
@@ -30,18 +29,5 @@
         .remove {
             display: block;
         }
-    }
-}
-
-.ui-issue-body {
-    margin: -16px;
-    position: relative;
-    .react-mde {
-        border: none;
-    }
-    .save-button {
-        position: absolute;
-        right: 16px;
-        bottom: 16px;
     }
 }

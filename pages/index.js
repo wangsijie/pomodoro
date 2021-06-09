@@ -1,17 +1,13 @@
-import { Card, Progress, Button, Collapse, Spin, Badge } from "antd";
+import { Card, Progress, Button, Spin, Badge } from "antd";
 import { ReloadOutlined } from '@ant-design/icons';
 import moment from "moment";
 import axios from 'axios';
-import nextCookie from 'next-cookies'
 import Layout from "../components/layout";
 import Login from "../components/login";
-import { getIssues, getCategories } from '../helper/db';
 import './index.less';
 import { useState, useEffect, useCallback } from "react";
 import AddIssue from "../components/add-issue";
 import IssueTitle from "../components/issue/title";
-import IssueBody from "../components/issue/body";
-import { getInfo } from "../helper/token";
 import UserInfo from "../components/user-info";
 import Categories from "../components/categories";
 
@@ -108,7 +104,7 @@ function Home() {
   for (let i = today; i > 0; i--) {
     const finishedIssues = issues
         .filter(issue => {
-          const day = (moment(issue.createdAt).day() + 6) % 7 + 1;
+          const day = (moment(issue.time).day() + 6) % 7 + 1;
           return day === i;
         });
     const items = categories.map(category => {
@@ -190,19 +186,14 @@ function Home() {
             <Progress percent={item.percent} />
           </div>
         </div>)}
-        <Collapse className="issue-list">
-          {day.issues.map((issue, index) => <Collapse.Panel
-            key={issue.createdAt}
-            header={<IssueTitle
-              number={day.issues.length - index}
-              issue={issue}
-              onDeleted={reload}
-              categories={categories}
-            />}
-          >
-            <IssueBody issue={issue} updateIssue={updateIssue} />
-          </Collapse.Panel>)}
-        </Collapse>
+        <ul className="issue-list">
+          {day.issues.map((issue, index) => <li key={issue.id}><IssueTitle
+            number={day.issues.length - index}
+            issue={issue}
+            onDeleted={reload}
+            categories={categories}
+          /></li>)}
+        </ul>
       </Card>)}
     </Spin>
   </Layout>

@@ -15,13 +15,13 @@ export default async (req, res) => {
         return;
     }
     if (req.method === 'POST') {
-        const { title, categoryId, content } = req.body;
+        const { title, categoryId } = req.body;
         if (!title || !categoryId) {
             res.statusCode = 403;
             res.end();
             return;
         }
-        await addIssue({ title, categoryId, userId: user.id, content });
+        await addIssue({ title, categoryId, userId: user.id });
         res.statusCode = 201;
         res.end();
     }
