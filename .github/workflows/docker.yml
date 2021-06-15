@@ -27,6 +27,8 @@ jobs:
           --build-arg OTS_SK \
           --build-arg OTS_ENDPOINT \
           --build-arg OTS_INSTANCE \
+          --build-arg GH_BASE_URL \
+          --build-arg GH_API_URL \
           -t ghcr.io/wangsijie/pomodoro .
       env:
         JWT_KEY: ${{ secrets.JWT_KEY }}
@@ -36,5 +38,7 @@ jobs:
         OTS_SK: ${{ secrets.OTS_SK }}
         OTS_ENDPOINT: ${{ secrets.OTS_ENDPOINT }}
         OTS_INSTANCE: ${{ secrets.OTS_INSTANCE }}
+        GH_BASE_URL: ${{ secrets.GH_BASE_URL }}
+        GH_API_URL: ${{ secrets.GH_API_URL }}
     - name: push
       run: docker push ghcr.io/wangsijie/pomodoro
