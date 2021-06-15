@@ -9,7 +9,11 @@ export default async (req, res) => {
     let accessToken;
     const { code, pat } = req.query;
     if (code) {
-        const { access_token } = await requestAccessToken(code);
+        const data = await requestAccessToken(code);
+        const { access_token } = data;
+        if (!access_token) {
+            throw new Error('GitHub登陆失败' + JSON.stringify(data));
+        }
         accessToken = access_token;
     } else if (pat) {
         accessToken = pat;
