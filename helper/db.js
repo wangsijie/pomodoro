@@ -7,7 +7,7 @@ export async function getIssues(userId) {
         throw new Error('userId needed');
     }
     const week = moment().startOf('isoWeek');
-    return await getClient().getRows(
+    const issues = await getClient().getRows(
         'issue',
         {
             userId,
@@ -18,6 +18,7 @@ export async function getIssues(userId) {
             id: TS.INF_MAX,
         },
     );
+    return issues.sort((a, b) => b.id - a.id);
 }
 
 export async function getIssue(userId, id) {
