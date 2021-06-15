@@ -1,0 +1,40 @@
+name: docker
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  CI: true
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: build
+      run: |
+        docker build \
+          --build-arg JWT_KEY \
+          --build-arg GH_ID \
+          --build-arg GH_SK \
+          --build-arg OTS_AK \
+          --build-arg OTS_SK \
+          --build-arg OTS_ENDPOINT \
+          --build-arg OTS_INSTANCE \
+          -t ghcr.io/wangsijie/pomodoro .
+      env:
+        JWT_KEY: ${{ secrets.JWT_KEY }}
+        GH_ID: ${{ secrets.GH_ID }}
+        GH_SK: ${{ secrets.GH_SK }}
+        OTS_AK: ${{ secrets.OTS_AK }}
+        OTS_SK: ${{ secrets.OTS_SK }}
+        OTS_ENDPOINT: ${{ secrets.OTS_ENDPOINT }}
+        OTS_INSTANCE: ${{ secrets.OTS_INSTANCE }}
+    - name: push
+      run: docker push ghcr.io/wangsijie/pomodoro

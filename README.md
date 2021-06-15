@@ -12,7 +12,7 @@
 
 ## 使用流程
 
-[https://pomodoros.app](https://pomodoros.app)
+[https://pomodoro.sijie.wang](https://pomodoro.sijie.wang)
 
 ### 准备工作
 
@@ -24,24 +24,10 @@
 
 ## 开发
 
-项目使用[NextJS](https://nextjs.org)开发。数据库存储[FaunaDB](https://fauna.com/)
-
-新建`.env`文件填写FaunaDB和GitHub OAuth的配置信息
-
-```
-GITHUB_CLIENT_ID="0f8812dexxxxx"
-GITHUB_CLIENT_SECRET="12a2dff1a85xxxxx"
-FAUNA_KEY="LTAI4FnTFbxjSADxxxxxxxx"
-```
+WIP
 
 然后运行`yarn dev`
 
 ## 部署
 
-### now.sh
-
-参照`vercel.json`文件设置secret后，执行
-
-```
-now --prod
-```
+WIP

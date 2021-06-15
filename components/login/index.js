@@ -4,7 +4,7 @@ import { GithubOutlined } from '@ant-design/icons';
 import './login.less';
 import Layout from '../layout';
 
-const clientId = process.env.GITHUB_CLIENT_ID;
+const clientId = process.env.GH_ID;
 
 export default function Login() {
     const [pat, setPat] = useState('');

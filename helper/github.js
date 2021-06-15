@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-export const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+export const CLIENT_ID = process.env.GH_ID;
+export const CLIENT_SECRET = process.env.GH_SK;
 
 export const requestAccessToken = async (code) => {
     const res = await axios.post(
