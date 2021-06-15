@@ -18,7 +18,15 @@ module.exports = (phase, { defaultConfig }) => {
         },
         env: {
             API_ROOT: '',
+            JWT_KEY: process.env.JWT_KEY,
             GH_ID: process.env.GH_ID,
+            GH_SK: process.env.GH_SK,
+            OTS_AK: process.env.OTS_AK,
+            OTS_SK: process.env.OTS_SK,
+            OTS_ENDPOINT: process.env.OTS_ENDPOINT,
+            OTS_INSTANCE: process.env.OTS_INSTANCE,
+            GH_BASE_URL: process.env.GH_BASE_URL,
+            GH_API_URL: process.env.GH_API_URL,
         },
     };
     if (phase !== PHASE_DEVELOPMENT_SERVER) {
